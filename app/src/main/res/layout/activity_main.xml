@@ -26,19 +26,6 @@
         tools:ignore="MissingConstraints,UselessLeaf" />
 
     <View
-        android:id="@+id/line_horizontal_center"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@color/colorAccent"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.454" />
-
-    <View
         android:id="@+id/line_horizontal_center2"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
@@ -46,10 +33,9 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/search_criteria"
@@ -131,8 +117,8 @@
 
     <ListView
         android:id="@+id/list_view"
-        android:layout_width="316dp"
-        android:layout_height="267dp"
+        android:layout_width="320dp"
+        android:layout_height="193dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
