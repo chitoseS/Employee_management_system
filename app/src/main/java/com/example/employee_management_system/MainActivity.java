@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> mArrayAdapter;
 
     // リストに表示する仮のデータを用意 https://qiita.com/Tsumugi/items/47f31bb7351979a45653
-    private static final String[] employeeName = {
-            "上野", "栗田", "津川"
-    };
+//    private static final String[] employeeName = {
+//            "上野", "栗田", "津川"
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         insertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("log", "__________");
 
                 // インスタンスが存在しない場合？
                 if (mHelper == null) {
@@ -82,12 +81,36 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("log", "----------");
-
                 raedData();
             }
         });
+
+        // 削除ボタンの実装
+        Button deleteButton = findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // インスタンスが存在しない場合？
+                if (mHelper == null) {
+                    // コンストラクター getApplicationContext() でインタフェース作成。
+                    mHelper = new TestOpenHelper(getApplicationContext());
+                }
+
+                // dbが存在しない場合？？
+                if (mDb == null) {
+                    // データベースを読み書きするとき getWritableDatabase()
+                    // 読み取り専用で良い場合 getReadableDatabase()
+                    // インタフェースを読み書き権限で扱う。
+                    mDb = mHelper.getWritableDatabase();
+                }
+
+                deleteData(mDb);
+            }
+        });
     }
+
+
 
     // SQLiteに対するREADメソッド
     private void raedData() {
@@ -145,15 +168,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d("debug", Arrays.toString(insertList));
 
         cursor.close();
-//        Log.d("debug", "**********" + stringBuilder.toString());
+        // Log.d("debug", "**********" + stringBuilder.toString());
 
-//        // ArrayAdapterの用意  android.R.layout.simple_list_item_1は、アンドロイドにあらかじめ用意されているレイアウトファイル。
-        mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeName);
-
-
+        // ArrayAdapterの用意  android.R.layout.simple_list_item_1は、アンドロイドにあらかじめ用意されているレイアウトファイル。
         mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, insertList);
-//
-////        // Adapterの指定
+
+        // Adapterの指定
         mListView.setAdapter(mArrayAdapter);
     }
 
@@ -165,5 +185,10 @@ public class MainActivity extends AppCompatActivity {
         values.put("employee_id", id);
 
         mDb.insert("testdb", null, values);
+    }
+
+    // SQLiteに対するDELETEメソッド
+    private void deleteData(SQLiteDatabase mDb) {
+        mDb.delete("testdb", null, null);
     }
 }
