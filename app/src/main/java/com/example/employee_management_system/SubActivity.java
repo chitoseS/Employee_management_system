@@ -17,6 +17,9 @@ public class SubActivity extends AppCompatActivity {
     // クラス変数
     private TestOpenHelper mHelper;
     private SQLiteDatabase mDb;
+    private TextView mReceivedTextView;
+    private TextView mTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +29,17 @@ public class SubActivity extends AppCompatActivity {
         // Menu画面からデータの受け取り
         Intent intent = getIntent();
         String receivedData = intent.getStringExtra("Message");
-        TextView textView = findViewById(R.id.textView);
-        textView.setText(receivedData);
+
+        // データ確認
+        mReceivedTextView = findViewById(R.id.received_textView);
+        mReceivedTextView.setText(String.format("受取ったデータ：%s", receivedData));
+
+        // DB検索用
+        mTextView = findViewById(R.id.textView);
+        mTextView.setText(receivedData);
 
         // 受取ったデータ（リストの番号）から対象のデータを取得し表示する。
-        readData(receivedData, textView);
+        readData(receivedData, mTextView);
 
         // 戻るボタンの実装
         Button return_button = findViewById(R.id.return_button);
@@ -77,9 +86,6 @@ public class SubActivity extends AppCompatActivity {
                 null
         );
 
-        // SQLiteDatabase.rawQuery()メソッドの場合
-        // 生のSQLを書く
-
         // 取得した結果に対するカーソルを先頭に移動させる？
         cursor.moveToFirst();
 
@@ -99,9 +105,8 @@ public class SubActivity extends AppCompatActivity {
         }
 
         // StringBuilderを文字配列に変換
-        insertList = stringBuilder.toString().split("\n");
-        Log.d("debug", Arrays.toString(insertList));
-        textView.setText(Arrays.toString(insertList));
+        Log.d("debug", "---------->" + stringBuilder.toString());
+        textView.setText(stringBuilder.toString());
 
         cursor.close();
     }
