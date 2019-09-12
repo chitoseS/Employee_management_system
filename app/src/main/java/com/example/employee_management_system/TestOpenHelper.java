@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /// [Android] データベース SQLite の簡単作成
 /// https://akira-watson.com/android/sqlite.html
-public class SqliteOpenHelper extends SQLiteOpenHelper {
+public class TestOpenHelper extends SQLiteOpenHelper {
 
     // データベースのバージョン
     private static final int DATABASE_VERSION = 1;
@@ -31,7 +31,12 @@ public class SqliteOpenHelper extends SQLiteOpenHelper {
 
 
     // コンストラクター
-    SqliteOpenHelper(Context context) {
+    TestOpenHelper(Context context) {
+        // 親クラスのコンストラクタを呼び出している。http://individualmemo.blog104.fc2.com/blog-entry-47.html
+        // SQLiteOpenHelperが親クラス（スーパークラス、基底クラス）
+        // super() で 自分でコーディングすることで親クラスのコンストラクタを呼べる。
+        // 第1引数：DBを利用するアプリのContent（インタフェース？）。このクラスを呼ぶときにthisか、getApplication()を指定する。
+        // 第3引数：特に理由が無ければ、nullでOK.
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -45,6 +50,7 @@ public class SqliteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // テーブル作成
         // SQLiteファイルがなければSQLiteファイルが作成される
+        // データベースファイルがある場合は、呼ばれない。
         db.execSQL(
                 SQL_CREATE_ENTRIES
         );
