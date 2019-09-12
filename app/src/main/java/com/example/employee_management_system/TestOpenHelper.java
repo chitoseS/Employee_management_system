@@ -19,13 +19,14 @@ public class TestOpenHelper extends SQLiteOpenHelper {
     private static final String COLUMN_NAME_TITLE = "employee_name";
     private static final String COLUMN_NAME_SUBTITLE = "employee_id";
 
-    // SQL文
+    // CREATE
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     _ID + " INTEGER PRIMARY KEY," +
                     COLUMN_NAME_TITLE + " TEXT," +
                     COLUMN_NAME_SUBTITLE + " INTEGER)";
 
+    // DELETE
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
