@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     // IdとNameの入力チェック
     private void checkData(String name, String id, TextView mTextOperation) {
         if(name.isEmpty()){
+            // setTextに文字列をそのまま記述すると、Use Android resources instead.と言われるため。
             mTextOperation.setText(R.string.check_name);
         }
         if(id.isEmpty()){
