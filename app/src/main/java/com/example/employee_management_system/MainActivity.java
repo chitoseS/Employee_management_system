@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.Arrays;
 
@@ -21,14 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
     private EditText mEditTextName;
     private EditText mEditTextId;
+    private TextView mTextOperation;
     private TestOpenHelper mHelper;
     private SQLiteDatabase mDb;
     ArrayAdapter<String> mArrayAdapter;
-
-    // リストに表示する仮のデータを用意 https://qiita.com/Tsumugi/items/47f31bb7351979a45653
-//    private static final String[] employeeName = {
-//            "上野", "栗田", "津川"
-//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +35,8 @@ public class MainActivity extends AppCompatActivity {
         // リストのIDを取得
         mListView = findViewById(R.id.list_view);
 
-        // EditTextの文字列を取得
-        mEditTextName = findViewById(R.id.name_editText);
-        mEditTextId = findViewById(R.id.employee_id_editText);
-
-//        // ArrayAdapterの用意  android.R.layout.simple_list_item_1は、アンドロイドにあらかじめ用意されているレイアウトファイル。
-//        mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeName);
-//
-//        // Adapterの指定
-//        mListView.setAdapter(mArrayAdapter);
+        // オペレーションの内容表示用のTextView
+        mTextOperation = findViewById(R.id.textOperation);
 
         // 追加ボタンの実装
         Button insertButton = findViewById(R.id.insert_button);
@@ -68,11 +58,20 @@ public class MainActivity extends AppCompatActivity {
                     mDb = mHelper.getWritableDatabase();
                 }
 
+                // EditTextの文字列を取得
+                mEditTextName = findViewById(R.id.name_editText);
+                mEditTextId = findViewById(R.id.employee_id_editText);
+
                 // insertデータの準備
                 String name = mEditTextName.getText().toString();
                 String id = mEditTextId.getText().toString();
 
+                // 入力チェック
+                checkData(name, id, mTextOperation);
+
+                // データの挿入
                 insertData(mDb, name, id);
+                mTextOperation.setText("データを追加しました。");
             }
         });
 
@@ -110,6 +109,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // IdとNameの入力チェック
+    private void checkData(String name, String id, TextView mTextOperation) {
+        if(name.isEmpty()){
+            mTextOperation.setText(R.string.check_name);
+        }
+        if(id.isEmpty()){
+            mTextOperation.setText(R.string.check_id);
+        }
+    }
 
 
     // SQLiteに対するREADメソッド

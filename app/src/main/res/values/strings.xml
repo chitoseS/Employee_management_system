@@ -7,4 +7,7 @@
     <string name="search_result">検索結果</string>
     <string name="insert">追加</string>
     <string name="delete">削除</string>
+    <string name="operation">実行内容</string>
+    <string name="check_name">Nameの項目が空です</string>
+    <string name="check_id">Idの項目が空です</string>
 </resources>
