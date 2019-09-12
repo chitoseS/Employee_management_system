@@ -1,7 +1,6 @@
 package com.example.employee_management_system;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.TypedArrayUtils;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -43,9 +42,11 @@ public class MainActivity extends AppCompatActivity {
         // listが選択された時の処理
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
+            // view:選択されたリスト項目, position:選択されたリスト項目の位置, long l:選択されたリスト項目のID
+            // https://androidroid.info/android/listview/30/
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String msg = position + "番目が選択されました。";
-                Log.d("debug", msg);
+                String msg = position + "";
+//                Log.d("debug", msg);
 
                 // 画面遷移
                 Intent intent = new Intent(MainActivity.this, SubActivity.class);
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                raedData();
+                readData();
             }
         });
 
@@ -145,9 +146,23 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // SQLiteに対するINSERTメソッド
+    private void insertData(SQLiteDatabase mDb, String name, String id) {
+
+        ContentValues values = new ContentValues();
+        values.put("employee_name", name);
+        values.put("employee_id", id);
+
+        mDb.insert("testdb", null, values);
+    }
+
+    // SQLiteに対するDELETEメソッド
+    private void deleteData(SQLiteDatabase mDb) {
+        mDb.delete("testdb", null, null);
+    }
 
     // SQLiteに対するREADメソッド
-    private void raedData() {
+    private void readData() {
         // インスタンスが存在しない場合？
         if (mHelper == null) {
             // コンストラクター getApplicationContext() でインタフェース作成。
@@ -169,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = mDb.query(
                 "testdb",
                 new String[]{"employee_name", "employee_id"},
+                // where条件式  ex) "employee_id = 1"
                 null,
                 null,
                 null,
@@ -210,20 +226,5 @@ public class MainActivity extends AppCompatActivity {
         // Adapterの指定
         mListView.setAdapter(mArrayAdapter);
         mTextOperation.setText("データを検索しました。");
-    }
-
-    // SQLiteに対するINSERTメソッド
-    private void insertData(SQLiteDatabase mDb, String name, String id) {
-
-        ContentValues values = new ContentValues();
-        values.put("employee_name", name);
-        values.put("employee_id", id);
-
-        mDb.insert("testdb", null, values);
-    }
-
-    // SQLiteに対するDELETEメソッド
-    private void deleteData(SQLiteDatabase mDb) {
-        mDb.delete("testdb", null, null);
     }
 }
