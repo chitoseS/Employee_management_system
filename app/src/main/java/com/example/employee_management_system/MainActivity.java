@@ -86,7 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 String id = mEditTextId.getText().toString();
 
                 // 入力チェック
-                checkData(name, id, mTextOperation);
+                if(!checkData(name, id, mTextOperation)){
+                    return;
+                }
 
                 // データの挿入
                 insertData(mDb, name, id);
@@ -124,19 +126,23 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 deleteData(mDb);
+                mTextOperation.setText("データを削除しました。");
             }
         });
     }
 
     // IdとNameの入力チェック
-    private void checkData(String name, String id, TextView mTextOperation) {
+    private boolean checkData(String name, String id, TextView mTextOperation) {
         if (name.isEmpty()) {
             // setTextに文字列をそのまま記述すると、Use Android resources instead.と言われるため。
             mTextOperation.setText(R.string.check_name);
+            return false;
         }
         if (id.isEmpty()) {
             mTextOperation.setText(R.string.check_id);
+            return false;
         }
+        return true;
     }
 
 
@@ -203,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Adapterの指定
         mListView.setAdapter(mArrayAdapter);
+        mTextOperation.setText("データを検索しました。");
     }
 
     // SQLiteに対するINSERTメソッド
