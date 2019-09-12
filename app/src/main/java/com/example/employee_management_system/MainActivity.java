@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 String id = mEditTextId.getText().toString();
 
                 // 入力チェック
-                if(!checkData(name, id, mTextOperation)){
+                if (!checkData(name, id, mTextOperation)) {
                     return;
                 }
 
@@ -102,7 +102,23 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                readData();
+
+
+                // EditTextの文字列を取得
+                mEditTextName = findViewById(R.id.name_editText);
+                mEditTextId = findViewById(R.id.employee_id_editText);
+
+                // insertデータの準備
+                String name = mEditTextName.getText().toString();
+                String id = mEditTextId.getText().toString();
+
+                // 入力チェック
+                if (!checkData(name, id, mTextOperation)) {
+                    return;
+                }
+
+                // データ検索とリスト表示
+                readData(name, id);
             }
         });
 
@@ -162,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // SQLiteに対するREADメソッド
-    private void readData() {
+    private void readData(String name, String id) {
         // インスタンスが存在しない場合？
         if (mHelper == null) {
             // コンストラクター getApplicationContext() でインタフェース作成。
@@ -178,6 +194,16 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d("debug", "**********Cursor");
 
+        // where条件を作っておく
+        String where;
+
+        // デバッグ用に9999だと全件表示
+        if (id.equals("9999")) {
+            where = null;
+        } else {
+            where = "employee_name = \"" + name + "\" AND " + "employee_id = " + id;
+        }
+
         // SQLiteDatabase.query()メソッドの場合
         // レコードの検索を行った後、検索結果は、Cursorというインスタンスとして返されてくる。
         // https://android.roof-balcony.com/shori/strage/select/
@@ -185,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 "testdb",
                 new String[]{"employee_name", "employee_id"},
                 // where条件式  ex) "employee_id = 1"
-                null,
+                where,
                 null,
                 null,
                 null,
