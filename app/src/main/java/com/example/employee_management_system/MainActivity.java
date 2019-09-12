@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.TypedArrayUtils;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,23 @@ public class MainActivity extends AppCompatActivity {
 
         // オペレーションの内容表示用のTextView
         mTextOperation = findViewById(R.id.textOperation);
+
+        // listが選択された時の処理
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String msg = position + "番目が選択されました。";
+                Log.d("debug", msg);
+
+                // 画面遷移
+                Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                // intentにMessageというキーをつけて、値を設定する。(String)
+                intent.putExtra("Message", msg);
+                //遷移先の画面を起動
+                startActivityForResult(intent, Consts.REQUEST_CODE_FIRST);
+            }
+        });
+
 
         // 追加ボタンの実装
         Button insertButton = findViewById(R.id.insert_button);
@@ -111,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
 
     // IdとNameの入力チェック
     private void checkData(String name, String id, TextView mTextOperation) {
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             // setTextに文字列をそのまま記述すると、Use Android resources instead.と言われるため。
             mTextOperation.setText(R.string.check_name);
         }
-        if(id.isEmpty()){
+        if (id.isEmpty()) {
             mTextOperation.setText(R.string.check_id);
         }
     }
